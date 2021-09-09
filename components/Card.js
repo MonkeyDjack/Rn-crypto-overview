@@ -3,25 +3,25 @@ import React, {useEffect, useState} from "react";
 
 import { View, Text,Image, StyleSheet, TouchableOpacity } from "react-native";
 
-const Card = props =>{
+const Card = ({currency, symbol, currentPrice, priceChange, logoUrl}) =>{
 
 
     return (
         <TouchableOpacity>
             <View style={styles.cardContainer}>
                 <View style={styles.leftContainer}>
-                    <Image style={styles.image} source={{uri: "https://e7.pngegg.com/pngimages/261/204/png-clipart-bitcoin-bitcoin-thumbnail.png"}} />
+                    <Image style={styles.image} source={{uri: logoUrl}} />
                     <View style={styles.titlesContainer}>
-                    <Text style={styles.title}>Bitcoin</Text>
-                    <Text style={styles.subtitle}>BTC</Text>
+                    <Text style={styles.title}>{currency}</Text>
+                    <Text style={styles.subtitle}>{symbol}</Text>
                     </View>
                 </View>
 
 
 
                 <View style={styles.rightContainer}>
-                    <Text style={styles.title}>Bitcoin</Text>
-                    <Text style={[styles.subtitle, {color: 'red'}]}>BTC</Text>
+                    <Text style={styles.title}>{currentPrice}</Text>
+                    <Text style={[styles.subtitle, {color: 'red'}]}>{priceChange}</Text>
                 </View>
             </View>
         </TouchableOpacity>
