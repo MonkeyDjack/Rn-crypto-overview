@@ -117,7 +117,7 @@ export default function App() {
             
             />
 
-          <Card onPress={() =>openModal("Etherium", data.InfoETH)} currency={"Etherium"} 
+          <Card onPress={() =>openModal("Etherium")} currency={"Etherium"} 
             logoUrl={"https://toppng.com/uploads/preview/innovationhere-is-a-png-file-i-designed-of-ethereum-ethereum-logo-11563061039k7z95jc7md.png"}
             symbol={"ETH"} 
             currentPrice={roundToTwo(data.InfoETH.b[0])}
@@ -136,6 +136,7 @@ export default function App() {
             {data.historyInfo ? (
               <Chart
                 history={data.historyInfo} 
+                selectedData ={selectedData}
                 
               />
             ):null}
