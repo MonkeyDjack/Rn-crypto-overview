@@ -19,14 +19,14 @@ const Chart = ({history, selectedData})=>{
         
     }, []);
 
-    var realColors = chartData.filter(
+    var filterData = chartData.filter(
         obj => !(obj && Object.values(obj).length === 0 && obj.constructor === Object)
       );
-    console.log(realColors);
+    console.log(filterData);
     return(
         <ChartPathProvider>
         <View>
-            <Text></Text>
+            <Text>Time: {filterData[1].time+" Price: "+ filterData[1].price}</Text>
         </View>
         </ChartPathProvider>
     )
