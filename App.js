@@ -7,11 +7,12 @@ import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
+import Chart from './components/Chart';
 
 export default function App() {
-
     const[data,setData] = useState({InfoBTC: null, InfoETH: null,historyInfo: null, BTCchangePrice: null, ETHchangePrice: null});
-    const[coinPressed, setCoin] = useState("ETHUSD");
+    const[coinPressed, setCoin] = useState("BTCUSD");
+    const [selectedData, setSelectedData] = useState();
     const roundToTwo=(num)=> {
       return +(Math.round(num + "e+2")  + "e-2");
   }
@@ -48,7 +49,7 @@ export default function App() {
               setData({ InfoBTC: BTCcoinResult[BTCcoinSymbol],InfoETH: ETHcoinResult[ETHcoinSymbol] ,historyInfo: result[symbol], BTCchangePrice: checkPriceChange( BTCcoinResult[BTCcoinSymbol].p[0],  BTCcoinResult[BTCcoinSymbol].p[1]), ETHchangePrice:  checkPriceChange( ETHcoinResult[ETHcoinSymbol].p[0],  ETHcoinResult[ETHcoinSymbol].p[1])});
               
             }
-          }, 4000);
+          }, 1000);
         };
         check();
         
@@ -85,7 +86,16 @@ export default function App() {
   // variables
   const snapPoints = useMemo(() => ['50%'], []);
 
-  const openModal = () =>{
+  const openModal = (currency) =>{
+    if(currency === "Bitcoin"){
+      setCoin("BTCUSD");
+      setSelectedData(data.InfoBTC)
+    }
+    if(currency === "Etherium"){
+      setCoin("ETHUSD");
+      setSelectedData(data.InfoETH)
+    }
+    setSelectedData(selectedData);
     bottomSheetModalRef.current.present();
   }
 
@@ -95,37 +105,45 @@ export default function App() {
         
         <Text style={styles.title}>Info</Text>
       </View>
-      {data.InfoBTC &&
+      
       <BottomSheetModalProvider>
+      {data.InfoBTC && data.InfoETH ?(
       <View>   
-        <Card onPress={() =>openModal()} currency={"BitCoin"} 
+        <Card onPress={() =>openModal("Bitcoin")} currency={"BitCoin"} 
             logoUrl={"https://e7.pngegg.com/pngimages/261/204/png-clipart-bitcoin-bitcoin-thumbnail.png"}
             symbol={"BTC"} 
             currentPrice={roundToTwo(data.InfoBTC.b[0])}
             priceChange={data.BTCchangePrice}
-            onPress={() => openModal()}
+            
             />
 
-          <Card onPress={() =>openModal()} currency={"Etherium"} 
+          <Card onPress={() =>openModal("Etherium", data.InfoETH)} currency={"Etherium"} 
             logoUrl={"https://toppng.com/uploads/preview/innovationhere-is-a-png-file-i-designed-of-ethereum-ethereum-logo-11563061039k7z95jc7md.png"}
             symbol={"ETH"} 
             currentPrice={roundToTwo(data.InfoETH.b[0])}
             priceChange={data.ETHchangePrice}
             />    
           </View>
-
+          ):null}
           <BottomSheetModal
           ref={bottomSheetModalRef}
           index={0}
           snapPoints={snapPoints}
+          style={styles.bottomSheet}
           >
+            
             <View style={styles.contentContainer}>
-              <Text>Awesome 🎉</Text>
+            {data.historyInfo ? (
+              <Chart
+                history={data.historyInfo} 
+                
+              />
+            ):null}
             </View>
           </BottomSheetModal>
           </BottomSheetModalProvider>  
-         
-          }
+          
+      
      
      
       
@@ -146,5 +164,15 @@ const styles = StyleSheet.create({
   header:{
     marginTop:100,
     paddingHorizontal:20
+  },
+  bottomSheet:{
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: -4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   }
 });
