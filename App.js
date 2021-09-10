@@ -1,14 +1,20 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState,useRef, useMemo} from "react";
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import Card from './components/Card';
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+} from '@gorhom/bottom-sheet';
 
 export default function App() {
 
-    const[data,setData] = useState({InfoBTC: null, InfoETH: null,historyInfo: null, changePrice: null});
+    const[data,setData] = useState({InfoBTC: null, InfoETH: null,historyInfo: null, BTCchangePrice: null, ETHchangePrice: null});
     const[coinPressed, setCoin] = useState("ETHUSD");
-   
+    const roundToTwo=(num)=> {
+      return +(Math.round(num + "e+2")  + "e-2");
+  }
     
     useEffect(() =>{
       
@@ -25,7 +31,7 @@ export default function App() {
         );
         let check = function() {
           setTimeout(function () {
-            if (BTCcoinData === null || historyData === null)
+            if (BTCcoinData === null ||ETHcoinData === null || historyData === null)
               check();
             else {
               let result = historyData.data.result;
@@ -34,30 +40,28 @@ export default function App() {
               let BTCcoinSymbol = Object.keys(BTCcoinResult);
               let ETHcoinResult = ETHcoinData.data.result;
               let ETHcoinSymbol = Object.keys(ETHcoinResult)
-              if(symbol === undefined){
+              if(Object.keys(result) === undefined){
                 setTimeout(() => {
-                  
-                }, 1000);
+                  return;
+                }, 3000);
               }
-              setData({ InfoBTC: BTCcoinResult[BTCcoinSymbol],InfoETH: ETHcoinResult[ETHcoinSymbol] ,historyInfo: result[symbol], changePrice: checkPriceChange( BTCcoinResult[BTCcoinSymbol].p[0],  BTCcoinResult[BTCcoinSymbol].p[1]) });
+              setData({ InfoBTC: BTCcoinResult[BTCcoinSymbol],InfoETH: ETHcoinResult[ETHcoinSymbol] ,historyInfo: result[symbol], BTCchangePrice: checkPriceChange( BTCcoinResult[BTCcoinSymbol].p[0],  BTCcoinResult[BTCcoinSymbol].p[1]), ETHchangePrice:  checkPriceChange( ETHcoinResult[ETHcoinSymbol].p[0],  ETHcoinResult[ETHcoinSymbol].p[1])});
               
             }
           }, 4000);
         };
         check();
-        function roundToTwo(num) {
-          return +(Math.round(num + "e+2")  + "e-2");
-      }
+        
         const checkPriceChange = (newNumber, originalNumber)=>{
           let change = 0;
           if(newNumber > originalNumber){
              change = newNumber - originalNumber;
             change = change/originalNumber *100;
-            return roundToTwo(change)+"%";
+            return roundToTwo(change);
           }else{
              change = originalNumber - newNumber;
             change = change/originalNumber *100
-            return "-"+roundToTwo(change)+"%";
+            return "-"+roundToTwo(change);
     
           }
           
@@ -73,7 +77,17 @@ export default function App() {
       
       fetchData();
       console.log(data.InfoBTC);
-    }, [data])
+    }, [])
+
+    // ref
+  const bottomSheetModalRef = useRef(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['50%'], []);
+
+  const openModal = () =>{
+    bottomSheetModalRef.current.present();
+  }
 
   return (
     <View style={styles.container}>
@@ -82,24 +96,34 @@ export default function App() {
         <Text style={styles.title}>Info</Text>
       </View>
       {data.InfoBTC &&
-
-      <View>
-     
-        <Card onPress={() =>setCoin("ETHUSD")} currency={"BitCoin"} 
+      <BottomSheetModalProvider>
+      <View>   
+        <Card onPress={() =>openModal()} currency={"BitCoin"} 
             logoUrl={"https://e7.pngegg.com/pngimages/261/204/png-clipart-bitcoin-bitcoin-thumbnail.png"}
             symbol={"BTC"} 
-            currentPrice={data.InfoBTC.b[0]}
-            priceChange={data.changePrice}
+            currentPrice={roundToTwo(data.InfoBTC.b[0])}
+            priceChange={data.BTCchangePrice}
+            onPress={() => openModal()}
             />
 
-          <Card onPress={() =>setCoin("ETHUSD")} currency={"BitCoin"} 
-            logoUrl={"https://e7.pngegg.com/pngimages/261/204/png-clipart-bitcoin-bitcoin-thumbnail.png"}
+          <Card onPress={() =>openModal()} currency={"Etherium"} 
+            logoUrl={"https://toppng.com/uploads/preview/innovationhere-is-a-png-file-i-designed-of-ethereum-ethereum-logo-11563061039k7z95jc7md.png"}
             symbol={"ETH"} 
-            currentPrice={data.InfoETH.b[0]}
-            priceChange={data.changePrice}
-            />  
-            
-          </View>  
+            currentPrice={roundToTwo(data.InfoETH.b[0])}
+            priceChange={data.ETHchangePrice}
+            />    
+          </View>
+
+          <BottomSheetModal
+          ref={bottomSheetModalRef}
+          index={0}
+          snapPoints={snapPoints}
+          >
+            <View style={styles.contentContainer}>
+              <Text>Awesome 🎉</Text>
+            </View>
+          </BottomSheetModal>
+          </BottomSheetModalProvider>  
          
           }
      

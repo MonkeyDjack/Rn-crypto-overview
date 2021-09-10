@@ -3,11 +3,11 @@ import React, {useEffect, useState} from "react";
 
 import { View, Text,Image, StyleSheet, TouchableOpacity } from "react-native";
 
-const Card = ({currency, symbol, currentPrice, priceChange, logoUrl}) =>{
+const Card = ({currency, symbol, currentPrice, priceChange, logoUrl, onPress}) =>{
 const priceChangeColor = priceChange > 0 ? 'green': 'red'; 
 
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={onPress}>
             <View style={styles.cardContainer}>
                 <View style={styles.leftContainer}>
                     <Image style={styles.image} source={{uri: logoUrl}} />
@@ -21,7 +21,7 @@ const priceChangeColor = priceChange > 0 ? 'green': 'red';
 
                 <View style={styles.rightContainer}>
                     <Text style={styles.title}>${currentPrice}</Text>
-                    <Text style={[styles.subtitle, {color: priceChangeColor}]}>{priceChange}</Text>
+                    <Text style={[styles.subtitle, {color: priceChangeColor}]}>{priceChange}%</Text>
                 </View>
             </View>
         </TouchableOpacity>
