@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import { View, Text,Image, StyleSheet, TouchableOpacity } from "react-native";
 
 const Card = ({currency, symbol, currentPrice, priceChange, logoUrl}) =>{
-
+const priceChangeColor = priceChange > 0 ? 'green': 'red'; 
 
     return (
         <TouchableOpacity>
@@ -20,8 +20,8 @@ const Card = ({currency, symbol, currentPrice, priceChange, logoUrl}) =>{
 
 
                 <View style={styles.rightContainer}>
-                    <Text style={styles.title}>{currentPrice}</Text>
-                    <Text style={[styles.subtitle, {color: 'red'}]}>{priceChange}</Text>
+                    <Text style={styles.title}>${currentPrice}</Text>
+                    <Text style={[styles.subtitle, {color: priceChangeColor}]}>{priceChange}</Text>
                 </View>
             </View>
         </TouchableOpacity>
