@@ -1,33 +1,46 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
+import { View, Text,Image, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 
 
-import { View, Text,Image, StyleSheet, TouchableOpacity } from "react-native";
-
-const Card = ({currency, symbol, currentPrice, priceChange, logoUrl, onPress}) =>{
-const priceChangeColor = priceChange > 0 ? 'green': 'red'; 
-
+const Card = ({card}) =>{
+    console.log('df')
+    const roundToTwo=(num)=> {
+        return +(Math.round(num + "e+2")  + "e-2");
+    };
+    const checkPriceChange = (newNumber, originalNumber)=>{
+        let change = 0;
+        if(newNumber > originalNumber){
+           change = newNumber - originalNumber;
+          change = change/originalNumber *100;
+          return roundToTwo(change);
+        }else{
+           change = originalNumber - newNumber;
+          change = change/originalNumber *100
+          return "-"+roundToTwo(change);
+  
+        }
+    };
     return (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity >
             <View style={styles.cardContainer}>
                 <View style={styles.leftContainer}>
-                    <Image style={styles.image} source={{uri: logoUrl}} />
+                    <Image style={styles.image}  />
                     <View style={styles.titlesContainer}>
-                    <Text style={styles.title}>{currency}</Text>
-                    <Text style={styles.subtitle}>{symbol}</Text>
+                    <Text style={styles.title}>{console.log(card[1])}</Text>
+                    <Text style={styles.subtitle}>HELLOHELLO</Text>
                     </View>
                 </View>
 
 
 
                 <View style={styles.rightContainer}>
-                    <Text style={styles.title}>${currentPrice}</Text>
-                    <Text style={[styles.subtitle, {color: priceChangeColor}]}>{priceChange}%</Text>
+                    <Text style={styles.title}>${roundToTwo(card.b[0])}</Text>
+                    <Text style={styles.subtitle}>{checkPriceChange(card.p[0], card.p[1])}</Text>
                 </View>
             </View>
         </TouchableOpacity>
     )
 }
-
 
 const styles = StyleSheet.create({
     cardContainer:{
