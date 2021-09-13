@@ -5,9 +5,8 @@ import Card from "./Card";
 import { View, Text,Image, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { WatchListContext } from "./context/watchListContext";
 
-const CardList = () =>{
+const CardList = ({modal, getChartCoin}) =>{
     const [coins, setCoins] = useState([]);
-    //const priceChangeColor = priceChange > 0 ? 'green': 'red'; 
     const {watchList} = useContext(WatchListContext);
     const [isLoading, setIsLoading] = useState(false);
     useEffect(()=>{
@@ -25,6 +24,7 @@ const CardList = () =>{
             fetchData();
           } else setCoins([]);
         }, [watchList]);
+        
 
 
     const renderCards =() =>{
@@ -34,15 +34,17 @@ const CardList = () =>{
         }
         
             return(
-                <View>
-                    <View>
+
+                    
+                        <View>
                     { Object.entries(coins).map((card, i) =>{
-                        console.log(card[1])
-                        return <Card key={card[0]}  card={card[1]}/> 
+                        
+                        return <TouchableOpacity onPress={modal, getChartCoin(card[0])}><Card key={card[0]} symbol={card[0]}  card={card[1]}/></TouchableOpacity>
                     
                     })}
                     </View>
-                </View>
+                    
+
             );
         
     };

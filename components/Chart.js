@@ -32,14 +32,7 @@ const Chart = ({history, selectedData})=>{
 ;
     return(
         <ChartPathProvider>
-        <View>
-            <Text>{selectedData.currency}</Text>
-            {filterData ?(
-            <Text>Time: {filterData[20].price}</Text>
-            ):null}
-
-
-        </View>
+        
             
         </ChartPathProvider>
     )
