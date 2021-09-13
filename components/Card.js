@@ -26,7 +26,7 @@ const Card = ({card}) =>{
                 <View style={styles.leftContainer}>
                     <Image style={styles.image}  />
                     <View style={styles.titlesContainer}>
-                    <Text style={styles.title}>{console.log(card[1])}</Text>
+                    <Text style={styles.title}>fhjkj</Text>
                     <Text style={styles.subtitle}>HELLOHELLO</Text>
                     </View>
                 </View>
@@ -34,8 +34,8 @@ const Card = ({card}) =>{
 
 
                 <View style={styles.rightContainer}>
-                    <Text style={styles.title}>${roundToTwo(card.b[0])}</Text>
-                    <Text style={styles.subtitle}>{checkPriceChange(card.p[0], card.p[1])}</Text>
+                    <Text style={styles.title}>Price</Text>
+                    <Text style={styles.subtitle}>Percent</Text>
                 </View>
             </View>
         </TouchableOpacity>

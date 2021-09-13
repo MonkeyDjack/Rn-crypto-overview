@@ -21,24 +21,31 @@ const CardList = () =>{
             setCoins(response.data.result);
             setIsLoading(false);
         }
-        fetchData();
-    }, [])
-    if(isLoading){
+        if (watchList.length > 0) {
+            fetchData();
+          } else setCoins([]);
+        }, [watchList]);
 
-    }
+
     const renderCards =() =>{
+        //console.log(Object.entries(coins))
         if(isLoading){
             return <Text>Loading</Text>
-        }else{
-            return(
-                <FlatList>
-                    { Object.entries(coins).map(card =>{
-                        <Card key={card[0]}  card={card[1]}/> 
-                    })}
-                </FlatList>
-            )
         }
-    }
+        
+            return(
+                <View>
+                    <View>
+                    { Object.entries(coins).map((card, i) =>{
+                        console.log(card[1])
+                        return <Card key={card[0]}  card={card[1]}/> 
+                    
+                    })}
+                    </View>
+                </View>
+            );
+        
+    };
 
     return (<View>{renderCards()}</View>);
 }

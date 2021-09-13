@@ -2,13 +2,13 @@ import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import React, {useEffect, useState,useRef, useMemo} from "react";
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import Card from './components/CardList';
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
 } from '@gorhom/bottom-sheet';
 import Chart from './components/Chart';
 import CardList from './components/CardList';
+import Card from './components/Card';
 import { WatchListContextProvider } from './components/context/watchListContext';
 
 export default function App() {
@@ -18,10 +18,10 @@ export default function App() {
     <WatchListContextProvider>
     <View style={styles.container}>
       <View style={styles.header}>
-        
         <Text style={styles.title}>Crypto overview</Text>
-        <CardList />
-      </View>  
+        <CardList /> 
+      </View> 
+     
     </View>
     </WatchListContextProvider>
   );
