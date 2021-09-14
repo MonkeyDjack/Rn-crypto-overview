@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
-import React, {useEffect, useState,useRef, useMemo} from "react";
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import React, {useEffect, useState,useRef, useMemo, useContext} from "react";
+import { FlatList, StyleSheet, Text, View, Appearance } from 'react-native';
 import {
   BottomSheetModal,
   BottomSheetModalProvider,
@@ -9,10 +9,13 @@ import {
 import Chart from './components/Chart';
 import CardList from './components/CardList';
 import { WatchListContextProvider } from './components/context/watchListContext';
+import darkMode from './components/css/darkMode';
+import {  ThemeWatchListContextProvider } from './components/context/themeWatchList';
 
 export default function App() {
   const bottomSheetModalRef = useRef(null);
   const snapPoints = useMemo(()=>['50%'], []);
+
 
   const openModal = () => {
     bottomSheetModalRef.current.present();
@@ -25,7 +28,7 @@ export default function App() {
   };
 
   return (
-
+    <ThemeWatchListContextProvider>
     <WatchListContextProvider>
       <BottomSheetModalProvider>
     <View style={styles.container}>
@@ -44,6 +47,7 @@ export default function App() {
       </BottomSheetModal>
     </BottomSheetModalProvider>
     </WatchListContextProvider>
+    </ThemeWatchListContextProvider>
 
   );
 }
