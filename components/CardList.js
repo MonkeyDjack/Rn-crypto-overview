@@ -5,7 +5,7 @@ import Card from "./Card";
 import { View, Text,Image, StyleSheet, TouchableOpacity, FlatList } from "react-native";
 import { WatchListContext } from "./context/watchListContext";
 
-const CardList = ({modal, getChartCoin}) =>{
+const CardList = ({modal,getChartCoin}) =>{
     const [coins, setCoins] = useState([]);
     const {watchList} = useContext(WatchListContext);
     const [isLoading, setIsLoading] = useState(false);
@@ -32,6 +32,11 @@ const CardList = ({modal, getChartCoin}) =>{
         if(isLoading){
             return <Text>Loading</Text>
         }
+
+        const cardOnPress = (symbol) =>{
+            modal();
+            getChartCoin(symbol);
+        }
         
             return(
 
@@ -39,7 +44,7 @@ const CardList = ({modal, getChartCoin}) =>{
                         <View>
                     { Object.entries(coins).map((card, i) =>{
                         
-                        return <TouchableOpacity onPress={modal, getChartCoin(card[0])}><Card key={card[0]} symbol={card[0]}  card={card[1]}/></TouchableOpacity>
+                        return <TouchableOpacity key={`${i}+${card[0]}`} onPress={()=>cardOnPress(card[0])}><Card key={`${i+1}+${card[0]}`} symbol={card[0]}  card={card[1]}/></TouchableOpacity>
                     
                     })}
                     </View>

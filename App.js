@@ -8,25 +8,24 @@ import {
 } from '@gorhom/bottom-sheet';
 import Chart from './components/Chart';
 import CardList from './components/CardList';
-import Card from './components/Card';
 import { WatchListContextProvider } from './components/context/watchListContext';
 
 export default function App() {
   const bottomSheetModalRef = useRef(null);
-
   const snapPoints = useMemo(()=>['50%'], []);
 
   const openModal = () => {
     bottomSheetModalRef.current.present();
     console.log('hello');
   }
-  const [chosenCoin,setChosenCoin] = useState(null);
+  const [chosenCoin,setChosenCoin] = useState('');
   const getChartCoin = (index) => { // the callback
-    console.log(index);
     setChosenCoin(index);
+    console.log(chosenCoin)
   };
 
   return (
+
     <WatchListContextProvider>
       <BottomSheetModalProvider>
     <View style={styles.container}>
@@ -41,17 +40,18 @@ export default function App() {
       snapPoints={snapPoints}
       style={styles.bottomSheet}
       >
-
+        <Chart symbol ={chosenCoin} />
       </BottomSheetModal>
     </BottomSheetModalProvider>
     </WatchListContextProvider>
+
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
   },
   title:{
     fontSize: 26,

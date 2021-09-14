@@ -3,7 +3,7 @@ import { View, Text,Image, StyleSheet, TouchableOpacity, FlatList } from "react-
 
 
 const Card = ({symbol, card}) =>{
-    const priceChangeColor = card.p[1]> 0? "red":"green"
+    const priceChangeColor = card.p[1] > 0? "green":"red"
     let additionalInfo = {}
     if(symbol === "XXBTZUSD"){
          additionalInfo = {imgLink: 'https://www.clipartmax.com/png/middle/213-2137842_bitcoin-icon-bitcoin.png', title: 'Bitcoin', subtitle: 'BTC'};
